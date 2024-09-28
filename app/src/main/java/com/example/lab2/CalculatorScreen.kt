@@ -24,7 +24,7 @@ fun CalculatorScreen(viewModel: CalculatorViewModel) {
     val calculationResult by viewModel.calculationResult.observeAsState()
     val coalModel by viewModel.grossEmissionOfSolidPartCoal.observeAsState()
     val oilModel by viewModel.grossEmissionOfSolidPartOilFuel.observeAsState()
-
+    val gasModel by viewModel.grossEmissionOfSolidPartGas.observeAsState()
 
     val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {

@@ -36,11 +36,27 @@ class CalculatorViewModel : ViewModel() {
             )
         )
 
+    private val _grossEmissionOfSolidPartGas =
+        MutableLiveData(
+            GrossEmissionOfSolidParticlesModel(
+                39.48,
+                1.0,
+                0.15,
+                0.0,
+                0.985,
+                0.0,
+                158540.08
+            )
+        )
+
     val grossEmissionOfSolidPartCoal: LiveData<GrossEmissionOfSolidParticlesModel> =
         _grossEmissionOfSolidPartCoal
 
     val grossEmissionOfSolidPartOilFuel: LiveData<GrossEmissionOfSolidParticlesModel> =
         _grossEmissionOfSolidPartOilFuel
+
+    val grossEmissionOfSolidPartGas: LiveData<GrossEmissionOfSolidParticlesModel> =
+        _grossEmissionOfSolidPartGas
 
     fun updateQri(value: String, type: Type = Type.Coal) {
         when (type) {
@@ -50,7 +66,8 @@ class CalculatorViewModel : ViewModel() {
             Type.FuelOil -> _grossEmissionOfSolidPartOilFuel.value =
                 _grossEmissionOfSolidPartOilFuel.value!!.copy(Qri = value.toDoubleOrNull() ?: 0.0)
 
-            Type.Gas -> {}
+            Type.Gas -> _grossEmissionOfSolidPartGas.value =
+                _grossEmissionOfSolidPartGas.value!!.copy(Qri = value.toDoubleOrNull() ?: 0.0)
         }
     }
 
@@ -62,7 +79,8 @@ class CalculatorViewModel : ViewModel() {
             Type.FuelOil -> _grossEmissionOfSolidPartOilFuel.value =
                 _grossEmissionOfSolidPartOilFuel.value!!.copy(B = value.toDoubleOrNull() ?: 0.0)
 
-            Type.Gas -> {}
+            Type.Gas -> _grossEmissionOfSolidPartGas.value =
+                _grossEmissionOfSolidPartGas.value!!.copy(B = value.toDoubleOrNull() ?: 0.0)
         }
     }
 
@@ -75,7 +93,8 @@ class CalculatorViewModel : ViewModel() {
             Type.FuelOil -> _grossEmissionOfSolidPartOilFuel.value =
                 _grossEmissionOfSolidPartOilFuel.value!!.copy(a = value.toDoubleOrNull() ?: 0.0)
 
-            Type.Gas -> {}
+            Type.Gas -> _grossEmissionOfSolidPartGas.value =
+                _grossEmissionOfSolidPartGas.value!!.copy(a = value.toDoubleOrNull() ?: 0.0)
         }
     }
 
@@ -87,7 +106,8 @@ class CalculatorViewModel : ViewModel() {
             Type.FuelOil -> _grossEmissionOfSolidPartOilFuel.value =
                 _grossEmissionOfSolidPartOilFuel.value!!.copy(Ar = value.toDoubleOrNull() ?: 0.0)
 
-            Type.Gas -> {}
+            Type.Gas -> _grossEmissionOfSolidPartGas.value =
+                _grossEmissionOfSolidPartGas.value!!.copy(Ar = value.toDoubleOrNull() ?: 0.0)
         }
     }
 
@@ -99,7 +119,8 @@ class CalculatorViewModel : ViewModel() {
             Type.FuelOil -> _grossEmissionOfSolidPartOilFuel.value =
                 _grossEmissionOfSolidPartOilFuel.value!!.copy(G = value.toDoubleOrNull() ?: 0.0)
 
-            Type.Gas -> {}
+            Type.Gas -> _grossEmissionOfSolidPartGas.value =
+                _grossEmissionOfSolidPartGas.value!!.copy(G = value.toDoubleOrNull() ?: 0.0)
         }
     }
 
@@ -111,7 +132,8 @@ class CalculatorViewModel : ViewModel() {
             Type.FuelOil -> _grossEmissionOfSolidPartOilFuel.value =
                 _grossEmissionOfSolidPartOilFuel.value!!.copy(n = value.toDoubleOrNull() ?: 0.0)
 
-            Type.Gas -> {}
+            Type.Gas -> _grossEmissionOfSolidPartGas.value =
+                _grossEmissionOfSolidPartGas.value!!.copy(n = value.toDoubleOrNull() ?: 0.0)
         }
     }
 
@@ -122,13 +144,15 @@ class CalculatorViewModel : ViewModel() {
     fun onCountButtonPressed() {
         _calculationResult.value = calculateResult(
             _grossEmissionOfSolidPartCoal.value!!,
-            _grossEmissionOfSolidPartOilFuel.value!!
+            _grossEmissionOfSolidPartOilFuel.value!!,
+            _grossEmissionOfSolidPartGas.value!!,
         )
     }
 
     private fun calculateResult(
         solidModelCoal: GrossEmissionOfSolidParticlesModel,
         solidModelOilFuel: GrossEmissionOfSolidParticlesModel,
+        solidModelGas: GrossEmissionOfSolidParticlesModel,
     ): CalculationResult {
         val kCoal = calculateGrossEmissionOfSolidParticles(
             solidModelCoal
@@ -136,7 +160,7 @@ class CalculatorViewModel : ViewModel() {
         val ECoal = calculateGrossEmissionWhileBurning(
             GrossEmissionWhileBurningModel(
                 kCoal,
-                solidModelCoal.Qri,//20.47,
+                solidModelCoal.Qri,
                 solidModelCoal.B,
             )
         )
@@ -150,11 +174,23 @@ class CalculatorViewModel : ViewModel() {
                 solidModelOilFuel.B
             )
         )
+        val kGas = calculateGrossEmissionOfSolidParticles(
+            solidModelGas
+        )
+        val EGas = calculateGrossEmissionWhileBurning(
+            GrossEmissionWhileBurningModel(
+                kGas,
+                solidModelGas.Qri,
+                solidModelGas.B
+            )
+        )
         return CalculationResult(
             kCoal = kCoal,
             ECoal = ECoal,
             kOilFuel = kOilFuel,
             EOilFuel = EOilFuel,
+            kGas = kGas,
+            EGas = EGas,
         )
     }
 
