@@ -6,5 +6,6 @@ data class GrossEmissionOfSolidParticlesModel(
     val Ar: Double = 0.0,
     val G: Double = 0.0,
     val n: Double = 0.0,
-    val ks: Double = 0.0
+    val ks: Double = 0.0,
+    val B: Double = 0.0
 )

@@ -16,11 +16,13 @@ fun ComponentsRow(
     onAValChanged: (String, Type) -> Unit,
     onGValChanged: (String, Type) -> Unit,
     onnValChanged: (String, Type) -> Unit,
+    onBValChanged: (String, Type) -> Unit,
     qValue: String,
     aValue: String,
     arValue: String,
     gValue: String,
     nValue: String,
+    bValue: String,
     type: Type = Type.Coal
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -67,6 +69,14 @@ fun ComponentsRow(
             upperIndexText = "",
             lowerIndexText = "ду",
             onValueChange = { onnValChanged(it, type) }
+        )
+
+        InputRow(
+            textValue = bValue,
+            baseText = "B",
+            upperIndexText = "",
+            lowerIndexText = "",
+            onValueChange = { onBValChanged(it, type) }
         )
     }
 }

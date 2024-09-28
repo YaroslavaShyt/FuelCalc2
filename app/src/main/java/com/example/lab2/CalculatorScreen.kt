@@ -37,11 +37,13 @@ fun CalculatorScreen(viewModel: CalculatorViewModel) {
                     onAValChanged = { value, type -> viewModel.updateAr(value, type) },
                     onGValChanged = { value, type -> viewModel.updateG(value, type) },
                     onnValChanged = { value, type -> viewModel.updateN(value, type) },
+                    onBValChanged = {value, type -> viewModel.updateB(value, type)},
                     qValue = coalModel!!.Qri.toString(),
                     aValue = coalModel!!.a.toString(),
                     arValue = coalModel!!.Ar.toString(),
                     gValue = coalModel!!.G.toString(),
                     nValue = coalModel!!.n.toString(),
+                    bValue = coalModel!!.B.toString(),
                     type = Type.Coal
                 )
             }
@@ -56,11 +58,13 @@ fun CalculatorScreen(viewModel: CalculatorViewModel) {
                     onAValChanged = { value, type -> viewModel.updateAr(value, type) },
                     onGValChanged = { value, type -> viewModel.updateG(value, type) },
                     onnValChanged = { value, type -> viewModel.updateN(value, type) },
+                    onBValChanged = {value, type -> viewModel.updateB(value, type)},
                     qValue = oilModel!!.Qri.toString(),
                     aValue = oilModel!!.a.toString(),
                     arValue = oilModel!!.Ar.toString(),
                     gValue = oilModel!!.G.toString(),
                     nValue = oilModel!!.n.toString(),
+                    bValue = oilModel!!.B.toString(),
                     type = Type.FuelOil
                 )
             }
